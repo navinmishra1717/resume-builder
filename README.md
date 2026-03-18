@@ -1,3 +1,3 @@
-# Welcome to your Lovable project
+# Resume builder
 
-TODO: Document your project here
+Fill in your details, pick a template, and download a polished A4 PDF — all in your browser.
