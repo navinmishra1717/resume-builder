@@ -77,7 +77,7 @@ export default function MinimalTemplate({ data }: Props) {
                     {edu.startYear}{edu.startYear ? ' – ' : ''}{edu.endYear}
                   </p>
                 </div>
-                {edu.description && <p className="mt-1 text-[#4B5563] text-xs">{edu.description}</p>}
+                {edu.description && <RichContent html={edu.description} className="mt-1 text-[#4B5563] text-xs [&_ul]:list-disc [&_ul]:pl-4 [&_ol]:list-decimal [&_ol]:pl-4 [&_li]:mb-0.5" />}
               </div>
             ))}
           </div>
