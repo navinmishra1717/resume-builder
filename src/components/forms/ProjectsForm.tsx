@@ -2,8 +2,8 @@ import { ProjectEntry } from '@/types/resume';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Trash2, Plus } from 'lucide-react';
+import { RichTextEditor } from '@/components/ui/rich-text-editor';
 
 interface Props {
   entries: ProjectEntry[];
@@ -39,12 +39,11 @@ export default function ProjectsForm({ entries, onAdd, onUpdate, onRemove }: Pro
           </div>
           <div className="space-y-1.5">
             <Label>Description</Label>
-            <Textarea
-              placeholder="What the project does and your impact..."
+            <RichTextEditor
               value={proj.description}
-              onChange={e => onUpdate(proj.id, { description: e.target.value })}
-              rows={3}
-              className="resize-none"
+              onChange={val => onUpdate(proj.id, { description: val })}
+              placeholder="What the project does and your impact..."
+              minRows={3}
             />
           </div>
         </div>

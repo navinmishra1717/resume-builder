@@ -2,8 +2,8 @@ import { EducationEntry } from '@/types/resume';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Trash2, Plus } from 'lucide-react';
+import { RichTextEditor } from '@/components/ui/rich-text-editor';
 
 interface Props {
   entries: EducationEntry[];
@@ -55,7 +55,12 @@ export default function EducationForm({ entries, onAdd, onUpdate, onRemove }: Pr
           </div>
           <div className="space-y-1.5">
             <Label>Additional Notes</Label>
-            <Textarea placeholder="Relevant coursework, honors, activities..." value={edu.description} onChange={e => onUpdate(edu.id, { description: e.target.value })} rows={2} className="resize-none" />
+            <RichTextEditor
+              value={edu.description}
+              onChange={val => onUpdate(edu.id, { description: val })}
+              placeholder="Relevant coursework, honors, activities..."
+              minRows={2}
+            />
           </div>
         </div>
       ))}
