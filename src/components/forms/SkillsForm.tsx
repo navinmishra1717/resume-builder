@@ -3,6 +3,15 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Trash2, Plus } from 'lucide-react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+
+const EXPERTISE_LEVELS = ['Beginner', 'Skillful', 'Experienced', 'Expert'];
 
 interface Props {
   entries: SkillCategory[];
@@ -14,27 +23,53 @@ interface Props {
 export default function SkillsForm({ entries, onAdd, onUpdate, onRemove }: Props) {
   return (
     <div className="space-y-3">
-      <p className="text-xs text-muted-foreground">Group your skills by category. Separate skills with commas.</p>
-      {entries.map((skill, idx) => (
-        <div key={skill.id} className="flex gap-3 items-start animate-fade-in">
-          <div className="flex-1 grid grid-cols-3 gap-3">
+      <p className="text-xs text-muted-foreground">Add skills with their expertise level. These will be displayed in a two-column grid.</p>
+      {entries.map((item) => (
+        <div key={item.id} className="flex gap-3 items-end animate-fade-in">
+          <div className="flex-1 grid grid-cols-2 gap-3">
             <div className="space-y-1.5">
-              <Label className="text-xs">Category</Label>
-              <Input placeholder="Languages" value={skill.category} onChange={e => onUpdate(skill.id, { category: e.target.value })} />
+              <Label className="text-xs">Skill</Label>
+              <Input
+                placeholder="e.g. JavaScript"
+                value={item.skill}
+                onChange={e => onUpdate(item.id, { skill: e.target.value })}
+              />
             </div>
-            <div className="col-span-2 space-y-1.5">
-              <Label className="text-xs">Skills (comma-separated)</Label>
-              <Input placeholder="JavaScript, TypeScript, Python" value={skill.skills} onChange={e => onUpdate(skill.id, { skills: e.target.value })} />
+            <div className="space-y-1.5">
+              <Label className="text-xs">Expertise Level</Label>
+              <Select
+                value={item.expertiseLevel || ''}
+                onValueChange={val => onUpdate(item.id, { expertiseLevel: val })}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select level" />
+                </SelectTrigger>
+                <SelectContent>
+                  {EXPERTISE_LEVELS.map(level => (
+                    <SelectItem key={level} value={level}>{level}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
           </div>
-          <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive hover:text-destructive mt-6 shrink-0" onClick={() => onRemove(skill.id)}>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-9 w-9 text-destructive hover:text-destructive shrink-0"
+            onClick={() => onRemove(item.id)}
+          >
             <Trash2 className="w-3.5 h-3.5" />
           </Button>
         </div>
       ))}
-      <Button variant="outline" size="sm" onClick={onAdd} className="w-full gap-1.5 text-primary border-primary/30 hover:bg-accent hover:border-primary/60">
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={onAdd}
+        className="w-full gap-1.5 text-primary border-primary/30 hover:bg-accent hover:border-primary/60"
+      >
         <Plus className="w-3.5 h-3.5" />
-        Add Skill Group
+        Add Skill
       </Button>
     </div>
   );

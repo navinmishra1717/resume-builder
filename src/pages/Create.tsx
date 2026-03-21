@@ -32,6 +32,7 @@ const sections: SectionConfig[] = [
 ];
 
 const templates: { id: TemplateId; label: string; desc: string }[] = [
+  { id: 'classic', label: 'Classic', desc: 'Document style, serif font' },
   { id: 'minimal', label: 'Minimal', desc: 'Clean, timeless, ATS-friendly' },
   { id: 'modern', label: 'Modern', desc: 'Two-column with sidebar' },
   { id: 'creative', label: 'Creative', desc: 'Bold, colorful, standout' },
@@ -127,7 +128,7 @@ export default function Create() {
           {/* Template picker */}
           <div className="section-card p-4">
             <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest mb-3">Template</p>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-4 gap-2">
               {templates.map(t => (
                 <button
                   key={t.id}

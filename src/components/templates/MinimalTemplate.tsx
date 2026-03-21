@@ -1,5 +1,13 @@
 import { ResumeData } from '@/types/resume';
 
+function RichContent({ html, className }: { html: string; className?: string }) {
+  if (!html) return null;
+  if (html.trim().startsWith('<')) {
+    return <div className={className} dangerouslySetInnerHTML={{ __html: html }} />;
+  }
+  return <p className={className}>{html}</p>;
+}
+
 interface Props {
   data: ResumeData;
 }
@@ -25,7 +33,7 @@ export default function MinimalTemplate({ data }: Props) {
       {sectionVisibility.summary && personalInfo.summary && (
         <section className="mb-5">
           <h2 className="text-xs font-semibold uppercase tracking-widest text-[#6B7280] mb-2">Summary</h2>
-          <p className="text-[#374151]">{personalInfo.summary}</p>
+          <RichContent html={personalInfo.summary} className="text-[#374151] [&_ul]:list-disc [&_ul]:pl-4 [&_ol]:list-decimal [&_ol]:pl-4 [&_li]:mb-0.5" />
         </section>
       )}
 
@@ -45,7 +53,7 @@ export default function MinimalTemplate({ data }: Props) {
                     {exp.startDate}{exp.startDate ? ' – ' : ''}{exp.current ? 'Present' : exp.endDate}
                   </p>
                 </div>
-                {exp.description && <p className="mt-1 text-[#4B5563] whitespace-pre-line">{exp.description}</p>}
+                {exp.description && <RichContent html={exp.description} className="mt-1 text-[#4B5563] text-xs [&_ul]:list-disc [&_ul]:pl-4 [&_ol]:list-decimal [&_ol]:pl-4 [&_li]:mb-0.5" />}
               </div>
             ))}
           </div>
@@ -69,7 +77,7 @@ export default function MinimalTemplate({ data }: Props) {
                     {edu.startYear}{edu.startYear ? ' – ' : ''}{edu.endYear}
                   </p>
                 </div>
-                {edu.description && <p className="mt-1 text-[#4B5563] text-xs">{edu.description}</p>}
+                {edu.description && <RichContent html={edu.description} className="mt-1 text-[#4B5563] text-xs [&_ul]:list-disc [&_ul]:pl-4 [&_ol]:list-decimal [&_ol]:pl-4 [&_li]:mb-0.5" />}
               </div>
             ))}
           </div>
@@ -80,11 +88,11 @@ export default function MinimalTemplate({ data }: Props) {
       {sectionVisibility.skills && skills.length > 0 && (
         <section className="mb-5">
           <h2 className="text-xs font-semibold uppercase tracking-widest text-[#6B7280] mb-2">Skills</h2>
-          <div className="space-y-1">
+          <div className="grid grid-cols-2 gap-x-6 gap-y-1">
             {skills.map(skill => (
-              <div key={skill.id} className="flex gap-2">
-                {skill.category && <span className="font-medium text-[#374151] min-w-[80px]">{skill.category}:</span>}
-                <span className="text-[#4B5563]">{skill.skills}</span>
+              <div key={skill.id} className="flex justify-between items-baseline">
+                <span className="text-[#374151]">{skill.skill}</span>
+                {skill.expertiseLevel && <span className="text-[#6B7280] text-xs">{skill.expertiseLevel}</span>}
               </div>
             ))}
           </div>

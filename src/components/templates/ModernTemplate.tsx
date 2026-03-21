@@ -22,14 +22,14 @@ export default function ModernTemplate({ data }: Props) {
           </div>
         </div>
 
-        {sectionVisibility.skills && skills.length > 0 && (
+      {sectionVisibility.skills && skills.length > 0 && (
           <div>
             <h2 className="text-xs font-bold uppercase tracking-widest text-[#93C5FD] mb-2 pb-1 border-b border-[#2563EB]/40">Skills</h2>
-            <div className="space-y-2">
+            <div className="space-y-1.5">
               {skills.map(skill => (
-                <div key={skill.id}>
-                  {skill.category && <p className="text-[#BFDBFE] text-[10px] font-semibold uppercase">{skill.category}</p>}
-                  <p className="text-white text-xs">{skill.skills}</p>
+                <div key={skill.id} className="flex justify-between items-baseline">
+                  <span className="text-white text-xs">{skill.skill}</span>
+                  {skill.expertiseLevel && <span className="text-[#93C5FD] text-[10px] ml-2 shrink-0">{skill.expertiseLevel}</span>}
                 </div>
               ))}
             </div>
