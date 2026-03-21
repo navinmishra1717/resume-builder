@@ -80,11 +80,11 @@ export default function MinimalTemplate({ data }: Props) {
       {sectionVisibility.skills && skills.length > 0 && (
         <section className="mb-5">
           <h2 className="text-xs font-semibold uppercase tracking-widest text-[#6B7280] mb-2">Skills</h2>
-          <div className="space-y-1">
+          <div className="grid grid-cols-2 gap-x-6 gap-y-1">
             {skills.map(skill => (
-              <div key={skill.id} className="flex gap-2">
-                {skill.category && <span className="font-medium text-[#374151] min-w-[80px]">{skill.category}:</span>}
-                <span className="text-[#4B5563]">{skill.skills}</span>
+              <div key={skill.id} className="flex justify-between items-baseline">
+                <span className="text-[#374151]">{skill.skill}</span>
+                {skill.expertiseLevel && <span className="text-[#6B7280] text-xs">{skill.expertiseLevel}</span>}
               </div>
             ))}
           </div>
