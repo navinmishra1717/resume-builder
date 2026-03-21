@@ -32,6 +32,7 @@ const sections: SectionConfig[] = [
 ];
 
 const templates: { id: TemplateId; label: string; desc: string }[] = [
+  { id: 'classic', label: 'Classic', desc: 'Document style, serif font' },
   { id: 'minimal', label: 'Minimal', desc: 'Clean, timeless, ATS-friendly' },
   { id: 'modern', label: 'Modern', desc: 'Two-column with sidebar' },
   { id: 'creative', label: 'Creative', desc: 'Bold, colorful, standout' },
