@@ -128,7 +128,7 @@ export default function Create() {
           {/* Template picker */}
           <div className="section-card p-4">
             <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest mb-3">Template</p>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-4 gap-2">
               {templates.map(t => (
                 <button
                   key={t.id}
