@@ -39,9 +39,14 @@ export default function ClassicTemplate({ data }: Props) {
     personalInfo.website && { label: 'Portfolio', href: personalInfo.website },
   ].filter(Boolean) as { label: string; href: string }[];
 
-  // Split skills into two columns
-  const leftSkills = skills.filter((_, i) => i % 2 === 0);
-  const rightSkills = skills.filter((_, i) => i % 2 === 1);
+
+  // Group skills by expertise level in display order
+  const LEVEL_ORDER = ['Expert', 'Experienced', 'Skillful', 'Beginner'];
+  const skillsByLevel = LEVEL_ORDER.reduce<Record<string, typeof skills>>((acc, level) => {
+    const group = skills.filter(s => s.expertiseLevel === level);
+    if (group.length > 0) acc[level] = group;
+    return acc;
+  }, {});
 
   return (
     <div className="font-serif text-[#1a1a1a] bg-white w-full min-h-full p-10 text-sm leading-relaxed" style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}>
@@ -63,12 +68,10 @@ export default function ClassicTemplate({ data }: Props) {
       {linkParts.length > 0 && (
         <>
           <div className="flex gap-0">
-            {/* Label col */}
             <div className="w-[160px] shrink-0 pt-3 pb-3 pr-6">
               <span className="text-[10px] font-bold uppercase tracking-widest text-[#555]">Links</span>
             </div>
-            {/* Content col */}
-            <div className="flex-1 pt-3 pb-3 border-l border-[#ccc] pl-6">
+            <div className="flex-1 pt-3 pb-3 pl-6">
               <p className="text-sm">
                 {linkParts.map((l, i) => (
                   <span key={l.label}>
@@ -90,7 +93,7 @@ export default function ClassicTemplate({ data }: Props) {
             <div className="w-[160px] shrink-0 pt-3 pb-3 pr-6">
               <span className="text-[10px] font-bold uppercase tracking-widest text-[#555]">Profile</span>
             </div>
-            <div className="flex-1 pt-3 pb-3 border-l border-[#ccc] pl-6">
+            <div className="flex-1 pt-3 pb-3 pl-6">
               <RichContent html={personalInfo.summary} className="text-sm text-[#222] [&_ul]:list-disc [&_ul]:pl-4 [&_ol]:list-decimal [&_ol]:pl-4 [&_li]:mb-0.5" />
             </div>
           </div>
@@ -105,7 +108,7 @@ export default function ClassicTemplate({ data }: Props) {
             <div className="w-[160px] shrink-0 pt-3 pb-3 pr-6">
               <span className="text-[10px] font-bold uppercase tracking-widest text-[#555]">Experience</span>
             </div>
-            <div className="flex-1 pt-3 pb-3 border-l border-[#ccc] pl-6 space-y-4">
+            <div className="flex-1 pt-3 pb-3 pl-6 space-y-4">
               {experience.map(exp => (
                 <div key={exp.id}>
                   <div className="flex items-baseline justify-between gap-4 mb-1">
@@ -132,34 +135,20 @@ export default function ClassicTemplate({ data }: Props) {
         </>
       )}
 
-      {/* Skills — two column grid */}
+      {/* Skills — grouped by expertise level */}
       {sectionVisibility.skills && skills.length > 0 && (
         <>
           <div className="flex gap-0">
             <div className="w-[160px] shrink-0 pt-3 pb-3 pr-6">
               <span className="text-[10px] font-bold uppercase tracking-widest text-[#555]">Skills</span>
             </div>
-            <div className="flex-1 pt-3 pb-3 border-l border-[#ccc] pl-6">
-              <div className="grid grid-cols-2 gap-x-10 gap-y-1">
-                {/* Left column */}
-                <div className="space-y-1">
-                  {leftSkills.map(s => (
-                    <div key={s.id} className="flex items-baseline justify-between">
-                      <span className="text-sm text-[#1a1a1a]">{s.skill}</span>
-                      <span className="text-sm text-[#555] ml-4">{s.expertiseLevel}</span>
-                    </div>
-                  ))}
+            <div className="flex-1 pt-3 pb-3 pl-6 space-y-3">
+              {Object.entries(skillsByLevel).map(([level, group]) => (
+                <div key={level}>
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-[#777] mb-1">{level}</p>
+                  <p className="text-sm text-[#1a1a1a]">{group.map(s => s.skill).join(', ')}</p>
                 </div>
-                {/* Right column */}
-                <div className="space-y-1">
-                  {rightSkills.map(s => (
-                    <div key={s.id} className="flex items-baseline justify-between">
-                      <span className="text-sm text-[#1a1a1a]">{s.skill}</span>
-                      <span className="text-sm text-[#555] ml-4">{s.expertiseLevel}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              ))}
             </div>
           </div>
           <div className="border-t border-[#ccc]" />
@@ -173,7 +162,7 @@ export default function ClassicTemplate({ data }: Props) {
             <div className="w-[160px] shrink-0 pt-3 pb-3 pr-6">
               <span className="text-[10px] font-bold uppercase tracking-widest text-[#555]">Education</span>
             </div>
-            <div className="flex-1 pt-3 pb-3 border-l border-[#ccc] pl-6 space-y-4">
+            <div className="flex-1 pt-3 pb-3 pl-6 space-y-4">
               {education.map(edu => (
                 <div key={edu.id}>
                   <p className="text-[11px] text-[#555] mb-1">
@@ -205,7 +194,7 @@ export default function ClassicTemplate({ data }: Props) {
             <div className="w-[160px] shrink-0 pt-3 pb-3 pr-6">
               <span className="text-[10px] font-bold uppercase tracking-widest text-[#555]">Projects</span>
             </div>
-            <div className="flex-1 pt-3 pb-3 border-l border-[#ccc] pl-6 space-y-4">
+            <div className="flex-1 pt-3 pb-3 pl-6 space-y-4">
               {projects.map(proj => (
                 <div key={proj.id}>
                   <p className="font-semibold text-sm">{proj.title || 'Project'}</p>
@@ -233,7 +222,7 @@ export default function ClassicTemplate({ data }: Props) {
             <div className="w-[160px] shrink-0 pt-3 pb-3 pr-6">
               <span className="text-[10px] font-bold uppercase tracking-widest text-[#555]">Certifications</span>
             </div>
-            <div className="flex-1 pt-3 pb-3 border-l border-[#ccc] pl-6 space-y-2">
+            <div className="flex-1 pt-3 pb-3 pl-6 space-y-2">
               {certifications.map(cert => (
                 <div key={cert.id} className="flex justify-between items-baseline">
                   <div>
@@ -256,7 +245,7 @@ export default function ClassicTemplate({ data }: Props) {
             <div className="w-[160px] shrink-0 pt-3 pb-3 pr-6">
               <span className="text-[10px] font-bold uppercase tracking-widest text-[#555]">Interests</span>
             </div>
-            <div className="flex-1 pt-3 pb-3 border-l border-[#ccc] pl-6">
+            <div className="flex-1 pt-3 pb-3 pl-6">
               <p className="text-sm text-[#333]">{hobbies.map(h => stripHtml(h.description)).filter(Boolean).join(' · ')}</p>
             </div>
           </div>
