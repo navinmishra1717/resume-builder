@@ -32,8 +32,8 @@ export interface ExperienceEntry {
 
 export interface SkillCategory {
   id: string;
-  category: string;
-  skills: string;
+  skill: string;
+  expertiseLevel: string;
 }
 
 export interface ProjectEntry {
@@ -57,7 +57,7 @@ export interface HobbyEntry {
   description: string;
 }
 
-export type TemplateId = 'minimal' | 'modern' | 'creative';
+export type TemplateId = 'minimal' | 'modern' | 'creative' | 'classic';
 
 export interface SectionVisibility {
   personalInfo: boolean;
