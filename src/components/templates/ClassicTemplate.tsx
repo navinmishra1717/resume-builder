@@ -39,9 +39,6 @@ export default function ClassicTemplate({ data }: Props) {
     personalInfo.website && { label: 'Portfolio', href: personalInfo.website },
   ].filter(Boolean) as { label: string; href: string }[];
 
-  // Split skills into two columns
-  const leftSkills = skills.filter((_, i) => i % 2 === 0);
-  const rightSkills = skills.filter((_, i) => i % 2 === 1);
 
   // Group skills by expertise level in display order
   const LEVEL_ORDER = ['Expert', 'Experienced', 'Skillful', 'Beginner'];
