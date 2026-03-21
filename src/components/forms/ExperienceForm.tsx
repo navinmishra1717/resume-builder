@@ -2,9 +2,9 @@ import { ExperienceEntry } from '@/types/resume';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Trash2, Plus } from 'lucide-react';
+import { RichTextEditor } from '@/components/ui/rich-text-editor';
 
 interface Props {
   entries: ExperienceEntry[];
@@ -54,12 +54,11 @@ export default function ExperienceForm({ entries, onAdd, onUpdate, onRemove }: P
           </div>
           <div className="space-y-1.5">
             <Label>Description & Achievements</Label>
-            <Textarea
-              placeholder="• Led development of core payment API processing $2M/month&#10;• Mentored 3 junior engineers&#10;• Reduced load time by 40%"
+            <RichTextEditor
               value={exp.description}
-              onChange={e => onUpdate(exp.id, { description: e.target.value })}
-              rows={4}
-              className="resize-none"
+              onChange={val => onUpdate(exp.id, { description: val })}
+              placeholder="• Led development of core payment API processing $2M/month&#10;• Mentored 3 junior engineers&#10;• Reduced load time by 40%"
+              minRows={4}
             />
           </div>
         </div>

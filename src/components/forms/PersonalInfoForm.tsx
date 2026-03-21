@@ -1,7 +1,7 @@
 import { PersonalInfo } from '@/types/resume';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
+import { RichTextEditor } from '@/components/ui/rich-text-editor';
 
 interface Props {
   data: PersonalInfo;
@@ -43,13 +43,11 @@ export default function PersonalInfoForm({ data, onChange }: Props) {
       </div>
       <div className="space-y-1.5">
         <Label htmlFor="summary">Professional Summary</Label>
-        <Textarea
-          id="summary"
-          placeholder="A brief overview of your experience and goals..."
+        <RichTextEditor
           value={data.summary}
-          onChange={e => onChange({ summary: e.target.value })}
-          rows={3}
-          className="resize-none"
+          onChange={val => onChange({ summary: val })}
+          placeholder="A brief overview of your experience and goals..."
+          minRows={3}
         />
       </div>
     </div>

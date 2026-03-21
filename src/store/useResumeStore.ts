@@ -114,7 +114,7 @@ export function useResumeStore() {
 
   // Skills
   const addSkillCategory = useCallback(() => {
-    const entry: SkillCategory = { id: generateId(), category: '', skills: '' };
+    const entry: SkillCategory = { id: generateId(), skill: '', expertiseLevel: '' };
     setData(prev => ({ ...prev, skills: [...prev.skills, entry] }));
   }, []);
 
