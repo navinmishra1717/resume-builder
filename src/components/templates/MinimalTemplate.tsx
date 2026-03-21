@@ -33,7 +33,7 @@ export default function MinimalTemplate({ data }: Props) {
       {sectionVisibility.summary && personalInfo.summary && (
         <section className="mb-5">
           <h2 className="text-xs font-semibold uppercase tracking-widest text-[#6B7280] mb-2">Summary</h2>
-          <p className="text-[#374151]">{personalInfo.summary}</p>
+          <RichContent html={personalInfo.summary} className="text-[#374151] [&_ul]:list-disc [&_ul]:pl-4 [&_ol]:list-decimal [&_ol]:pl-4 [&_li]:mb-0.5" />
         </section>
       )}
 
