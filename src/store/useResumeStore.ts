@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from "react";
 import type {
   ResumeData,
   PersonalInfo,
@@ -10,18 +10,15 @@ import type {
   HobbyEntry,
   TemplateId,
   SectionVisibility,
-} from '@/types/resume';
+} from "@/types/resume";
 
-const STORAGE_KEY = 'resume_builder_data';
+const STORAGE_KEY = "resume_builder_data";
 
 const defaultPersonalInfo: PersonalInfo = {
-  name: '',
-  email: '',
-  phone: '',
-  location: '',
-  website: '',
-  linkedin: '',
-  summary: '',
+  name: "",
+  email: "",
+  phone: "",
+  location: "",
 };
 
 const defaultSectionVisibility: SectionVisibility = {
@@ -37,13 +34,14 @@ const defaultSectionVisibility: SectionVisibility = {
 
 const defaultData: ResumeData = {
   personalInfo: defaultPersonalInfo,
+  summary: "",
   education: [],
   experience: [],
   skills: [],
   projects: [],
   certifications: [],
   hobbies: [],
-  selectedTemplate: 'minimal',
+  selectedTemplate: "minimal",
   sectionVisibility: defaultSectionVisibility,
 };
 
@@ -56,7 +54,14 @@ function loadFromStorage(): ResumeData {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
       const parsed = JSON.parse(saved);
-      return { ...defaultData, ...parsed, sectionVisibility: { ...defaultSectionVisibility, ...parsed.sectionVisibility } };
+      return {
+        ...defaultData,
+        ...parsed,
+        sectionVisibility: {
+          ...defaultSectionVisibility,
+          ...parsed.sectionVisibility,
+        },
+      };
     }
   } catch {
     // ignore parse errors
@@ -81,103 +86,216 @@ export function useResumeStore() {
   }, [data]);
 
   const updatePersonalInfo = useCallback((info: Partial<PersonalInfo>) => {
-    setData(prev => ({ ...prev, personalInfo: { ...prev.personalInfo, ...info } }));
+    setData((prev) => ({
+      ...prev,
+      personalInfo: { ...prev.personalInfo, ...info },
+    }));
+  }, []);
+
+  const updateSummary = useCallback((summary: string) => {
+    setData((prev) => ({ ...prev, summary: summary }));
   }, []);
 
   // Education
   const addEducation = useCallback(() => {
-    const entry: EducationEntry = { id: generateId(), degree: '', institution: '', location: '', startYear: '', endYear: '', gpa: '', description: '' };
-    setData(prev => ({ ...prev, education: [...prev.education, entry] }));
+    const entry: EducationEntry = {
+      id: generateId(),
+      degree: "",
+      institution: "",
+      location: "",
+      startYear: "",
+      endYear: "",
+      gpa: "",
+      description: "",
+    };
+    setData((prev) => ({ ...prev, education: [...prev.education, entry] }));
   }, []);
 
-  const updateEducation = useCallback((id: string, updates: Partial<EducationEntry>) => {
-    setData(prev => ({ ...prev, education: prev.education.map(e => e.id === id ? { ...e, ...updates } : e) }));
-  }, []);
+  const updateEducation = useCallback(
+    (id: string, updates: Partial<EducationEntry>) => {
+      setData((prev) => ({
+        ...prev,
+        education: prev.education.map((e) =>
+          e.id === id ? { ...e, ...updates } : e,
+        ),
+      }));
+    },
+    [],
+  );
 
   const removeEducation = useCallback((id: string) => {
-    setData(prev => ({ ...prev, education: prev.education.filter(e => e.id !== id) }));
+    setData((prev) => ({
+      ...prev,
+      education: prev.education.filter((e) => e.id !== id),
+    }));
   }, []);
 
   // Experience
   const addExperience = useCallback(() => {
-    const entry: ExperienceEntry = { id: generateId(), role: '', company: '', location: '', startDate: '', endDate: '', current: false, description: '' };
-    setData(prev => ({ ...prev, experience: [...prev.experience, entry] }));
+    const entry: ExperienceEntry = {
+      id: generateId(),
+      role: "",
+      company: "",
+      location: "",
+      startDate: "",
+      endDate: "",
+      current: false,
+      description: "",
+    };
+    setData((prev) => ({ ...prev, experience: [...prev.experience, entry] }));
   }, []);
 
-  const updateExperience = useCallback((id: string, updates: Partial<ExperienceEntry>) => {
-    setData(prev => ({ ...prev, experience: prev.experience.map(e => e.id === id ? { ...e, ...updates } : e) }));
-  }, []);
+  const updateExperience = useCallback(
+    (id: string, updates: Partial<ExperienceEntry>) => {
+      setData((prev) => ({
+        ...prev,
+        experience: prev.experience.map((e) =>
+          e.id === id ? { ...e, ...updates } : e,
+        ),
+      }));
+    },
+    [],
+  );
 
   const removeExperience = useCallback((id: string) => {
-    setData(prev => ({ ...prev, experience: prev.experience.filter(e => e.id !== id) }));
+    setData((prev) => ({
+      ...prev,
+      experience: prev.experience.filter((e) => e.id !== id),
+    }));
   }, []);
 
   // Skills
   const addSkillCategory = useCallback(() => {
-    const entry: SkillCategory = { id: generateId(), skill: '', expertiseLevel: '' };
-    setData(prev => ({ ...prev, skills: [...prev.skills, entry] }));
+    const entry: SkillCategory = {
+      id: generateId(),
+      skill: "",
+      expertiseLevel: "",
+    };
+    setData((prev) => ({ ...prev, skills: [...prev.skills, entry] }));
   }, []);
 
-  const updateSkillCategory = useCallback((id: string, updates: Partial<SkillCategory>) => {
-    setData(prev => ({ ...prev, skills: prev.skills.map(e => e.id === id ? { ...e, ...updates } : e) }));
-  }, []);
+  const updateSkillCategory = useCallback(
+    (id: string, updates: Partial<SkillCategory>) => {
+      setData((prev) => ({
+        ...prev,
+        skills: prev.skills.map((e) =>
+          e.id === id ? { ...e, ...updates } : e,
+        ),
+      }));
+    },
+    [],
+  );
 
   const removeSkillCategory = useCallback((id: string) => {
-    setData(prev => ({ ...prev, skills: prev.skills.filter(e => e.id !== id) }));
+    setData((prev) => ({
+      ...prev,
+      skills: prev.skills.filter((e) => e.id !== id),
+    }));
   }, []);
 
   // Projects
   const addProject = useCallback(() => {
-    const entry: ProjectEntry = { id: generateId(), title: '', description: '', link: '', technologies: '' };
-    setData(prev => ({ ...prev, projects: [...prev.projects, entry] }));
+    const entry: ProjectEntry = {
+      id: generateId(),
+      title: "",
+      description: "",
+      link: "",
+      technologies: "",
+    };
+    setData((prev) => ({ ...prev, projects: [...prev.projects, entry] }));
   }, []);
 
-  const updateProject = useCallback((id: string, updates: Partial<ProjectEntry>) => {
-    setData(prev => ({ ...prev, projects: prev.projects.map(e => e.id === id ? { ...e, ...updates } : e) }));
-  }, []);
+  const updateProject = useCallback(
+    (id: string, updates: Partial<ProjectEntry>) => {
+      setData((prev) => ({
+        ...prev,
+        projects: prev.projects.map((e) =>
+          e.id === id ? { ...e, ...updates } : e,
+        ),
+      }));
+    },
+    [],
+  );
 
   const removeProject = useCallback((id: string) => {
-    setData(prev => ({ ...prev, projects: prev.projects.filter(e => e.id !== id) }));
+    setData((prev) => ({
+      ...prev,
+      projects: prev.projects.filter((e) => e.id !== id),
+    }));
   }, []);
 
   // Certifications
   const addCertification = useCallback(() => {
-    const entry: CertificationEntry = { id: generateId(), name: '', issuer: '', date: '', link: '' };
-    setData(prev => ({ ...prev, certifications: [...prev.certifications, entry] }));
+    const entry: CertificationEntry = {
+      id: generateId(),
+      name: "",
+      issuer: "",
+      date: "",
+      link: "",
+    };
+    setData((prev) => ({
+      ...prev,
+      certifications: [...prev.certifications, entry],
+    }));
   }, []);
 
-  const updateCertification = useCallback((id: string, updates: Partial<CertificationEntry>) => {
-    setData(prev => ({ ...prev, certifications: prev.certifications.map(e => e.id === id ? { ...e, ...updates } : e) }));
-  }, []);
+  const updateCertification = useCallback(
+    (id: string, updates: Partial<CertificationEntry>) => {
+      setData((prev) => ({
+        ...prev,
+        certifications: prev.certifications.map((e) =>
+          e.id === id ? { ...e, ...updates } : e,
+        ),
+      }));
+    },
+    [],
+  );
 
   const removeCertification = useCallback((id: string) => {
-    setData(prev => ({ ...prev, certifications: prev.certifications.filter(e => e.id !== id) }));
+    setData((prev) => ({
+      ...prev,
+      certifications: prev.certifications.filter((e) => e.id !== id),
+    }));
   }, []);
 
   // Hobbies
   const addHobby = useCallback(() => {
-    const entry: HobbyEntry = { id: generateId(), description: '' };
-    setData(prev => ({ ...prev, hobbies: [...prev.hobbies, entry] }));
+    const entry: HobbyEntry = { id: generateId(), description: "" };
+    setData((prev) => ({ ...prev, hobbies: [...prev.hobbies, entry] }));
   }, []);
 
-  const updateHobby = useCallback((id: string, updates: Partial<HobbyEntry>) => {
-    setData(prev => ({ ...prev, hobbies: prev.hobbies.map(e => e.id === id ? { ...e, ...updates } : e) }));
-  }, []);
+  const updateHobby = useCallback(
+    (id: string, updates: Partial<HobbyEntry>) => {
+      setData((prev) => ({
+        ...prev,
+        hobbies: prev.hobbies.map((e) =>
+          e.id === id ? { ...e, ...updates } : e,
+        ),
+      }));
+    },
+    [],
+  );
 
   const removeHobby = useCallback((id: string) => {
-    setData(prev => ({ ...prev, hobbies: prev.hobbies.filter(e => e.id !== id) }));
+    setData((prev) => ({
+      ...prev,
+      hobbies: prev.hobbies.filter((e) => e.id !== id),
+    }));
   }, []);
 
   // Template
   const setTemplate = useCallback((template: TemplateId) => {
-    setData(prev => ({ ...prev, selectedTemplate: template }));
+    setData((prev) => ({ ...prev, selectedTemplate: template }));
   }, []);
 
   // Section visibility
   const toggleSection = useCallback((section: keyof SectionVisibility) => {
-    setData(prev => ({
+    setData((prev) => ({
       ...prev,
-      sectionVisibility: { ...prev.sectionVisibility, [section]: !prev.sectionVisibility[section] },
+      sectionVisibility: {
+        ...prev.sectionVisibility,
+        [section]: !prev.sectionVisibility[section],
+      },
     }));
   }, []);
 
@@ -190,12 +308,25 @@ export function useResumeStore() {
   return {
     data,
     updatePersonalInfo,
-    addEducation, updateEducation, removeEducation,
-    addExperience, updateExperience, removeExperience,
-    addSkillCategory, updateSkillCategory, removeSkillCategory,
-    addProject, updateProject, removeProject,
-    addCertification, updateCertification, removeCertification,
-    addHobby, updateHobby, removeHobby,
+    updateSummary,
+    addEducation,
+    updateEducation,
+    removeEducation,
+    addExperience,
+    updateExperience,
+    removeExperience,
+    addSkillCategory,
+    updateSkillCategory,
+    removeSkillCategory,
+    addProject,
+    updateProject,
+    removeProject,
+    addCertification,
+    updateCertification,
+    removeCertification,
+    addHobby,
+    updateHobby,
+    removeHobby,
     setTemplate,
     toggleSection,
     resetData,

@@ -3,9 +3,6 @@ export interface PersonalInfo {
   email: string;
   phone: string;
   location: string;
-  website: string;
-  linkedin: string;
-  summary: string;
 }
 
 export interface EducationEntry {
@@ -57,7 +54,13 @@ export interface HobbyEntry {
   description: string;
 }
 
-export type TemplateId = 'minimal' | 'modern' | 'creative' | 'classic';
+export interface LinksEntry {
+  id: string;
+  name: string;
+  link: string;
+}
+
+export type TemplateId = "minimal" | "modern" | "creative" | "classic";
 
 export interface SectionVisibility {
   personalInfo: boolean;
@@ -68,16 +71,19 @@ export interface SectionVisibility {
   projects: boolean;
   certifications: boolean;
   hobbies: boolean;
+  links: boolean;
 }
 
 export interface ResumeData {
   personalInfo: PersonalInfo;
+  summary: string;
   education: EducationEntry[];
   experience: ExperienceEntry[];
   skills: SkillCategory[];
   projects: ProjectEntry[];
   certifications: CertificationEntry[];
   hobbies: HobbyEntry[];
+  links: LinksEntry[];
   selectedTemplate: TemplateId;
   sectionVisibility: SectionVisibility;
 }
