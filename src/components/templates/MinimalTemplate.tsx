@@ -1,5 +1,13 @@
 import { ResumeData } from '@/types/resume';
 
+function RichContent({ html, className }: { html: string; className?: string }) {
+  if (!html) return null;
+  if (html.trim().startsWith('<')) {
+    return <div className={className} dangerouslySetInnerHTML={{ __html: html }} />;
+  }
+  return <p className={className}>{html}</p>;
+}
+
 interface Props {
   data: ResumeData;
 }
