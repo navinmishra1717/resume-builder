@@ -1,10 +1,11 @@
 import { useRef } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Download, Printer, FileText } from "lucide-react";
+import { ArrowLeft, Download, FileDown, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useResume } from "@/store/ResumeContext";
 import { TemplateId } from "@/types/resume";
 import ResumeRenderer from "@/components/templates/ResumeRenderer";
+import { generateDocx } from "@/lib/docxExport";
 
 const templates: { id: TemplateId; label: string }[] = [
   { id: "classic", label: "Classic" },
