@@ -260,6 +260,23 @@ export function useResumeStore() {
     }));
   }, []);
 
+  // Links
+  const addLink = useCallback(() => {
+    const entry: import("@/types/resume").LinksEntry = { id: generateId(), name: "", link: "" };
+    setData((prev) => ({ ...prev, links: [...(prev.links ?? []), entry] }));
+  }, []);
+
+  const updateLink = useCallback((id: string, updates: Partial<import("@/types/resume").LinksEntry>) => {
+    setData((prev) => ({
+      ...prev,
+      links: (prev.links ?? []).map((e) => e.id === id ? { ...e, ...updates } : e),
+    }));
+  }, []);
+
+  const removeLink = useCallback((id: string) => {
+    setData((prev) => ({ ...prev, links: (prev.links ?? []).filter((e) => e.id !== id) }));
+  }, []);
+
   // Hobbies
   const addHobby = useCallback(() => {
     const entry: HobbyEntry = { id: generateId(), description: "" };
