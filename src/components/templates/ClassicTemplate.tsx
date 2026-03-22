@@ -41,6 +41,7 @@ export default function ClassicTemplate({ data }: Props) {
     projects,
     certifications,
     hobbies,
+    links,
     sectionVisibility,
   } = data;
 
@@ -80,7 +81,17 @@ export default function ClassicTemplate({ data }: Props) {
             : ""}
         </h1>
         {contactParts.length > 0 && (
-          <p className="text-sm text-[#444] mt-1">{contactParts.join(", ")}</p>
+          <p className="text-sm text-[#444] mt-1">{contactParts.join("  ·  ")}</p>
+        )}
+        {sectionVisibility.links && links && links.length > 0 && (
+          <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 mt-1">
+            {links.filter(l => l.name || l.link).map(l => (
+              <a key={l.id} href={l.link} target="_blank" rel="noreferrer"
+                className="text-[11px] text-[#1a1a1a] underline">
+                {l.name || l.link}
+              </a>
+            ))}
+          </div>
         )}
       </div>
 

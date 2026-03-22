@@ -1,10 +1,11 @@
 import { useRef } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Download, Printer, FileText } from "lucide-react";
+import { ArrowLeft, Download, FileDown, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useResume } from "@/store/ResumeContext";
 import { TemplateId } from "@/types/resume";
 import ResumeRenderer from "@/components/templates/ResumeRenderer";
+import { generateDocx } from "@/lib/docxExport";
 
 const templates: { id: TemplateId; label: string }[] = [
   { id: "classic", label: "Classic" },
@@ -77,11 +78,11 @@ export default function Preview() {
             <Button
               variant="outline"
               size="sm"
-              onClick={() => window.print()}
+              onClick={() => generateDocx(data)}
               className="gap-1.5 hidden sm:flex"
             >
-              <Printer className="w-3.5 h-3.5" />
-              Print
+              <FileDown className="w-3.5 h-3.5" />
+              Download DOCX
             </Button>
             <Button size="sm" onClick={handleDownloadPDF} className="gap-1.5">
               <Download className="w-3.5 h-3.5" />
