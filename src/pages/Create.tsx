@@ -7,7 +7,7 @@ import {
   ChevronRight,
   FileText,
   Download,
-  Printer,
+  FileDown,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useResume } from "@/store/ResumeContext";
@@ -20,7 +20,9 @@ import SkillsForm from "@/components/forms/SkillsForm";
 import ProjectsForm from "@/components/forms/ProjectsForm";
 import CertificationsForm from "@/components/forms/CertificationsForm";
 import HobbiesForm from "@/components/forms/HobbiesForm";
+import LinksForm from "@/components/forms/LinksForm";
 import ResumeRenderer from "@/components/templates/ResumeRenderer";
+import { generateDocx } from "@/lib/docxExport";
 
 type SectionKey = keyof SectionVisibility;
 
@@ -118,18 +120,16 @@ export default function Create() {
       backgroundColor: "#ffffff",
     });
     const imgData = canvas.toDataURL("image/png");
-    const pdf = new jsPDF({
-      orientation: "portrait",
-      unit: "mm",
-      format: "a4",
-    });
+    const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
     pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
     pdf.save(`${data.personalInfo.name || "resume"}.pdf`);
   };
 
-  const handlePrint = () => window.print();
+  const handleDownloadDocx = async () => {
+    await generateDocx(data);
+  };
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -164,11 +164,11 @@ export default function Create() {
             <Button
               variant="outline"
               size="sm"
-              onClick={handlePrint}
+              onClick={handleDownloadDocx}
               className="hidden sm:flex gap-1.5"
             >
-              <Printer className="w-3.5 h-3.5" />
-              Print
+              <FileDown className="w-3.5 h-3.5" />
+              Download DOCX
             </Button>
             <Button size="sm" onClick={handleDownloadPDF} className="gap-1.5">
               <Download className="w-3.5 h-3.5" />
@@ -276,6 +276,14 @@ export default function Create() {
                   onAdd={store.addHobby}
                   onUpdate={store.updateHobby}
                   onRemove={store.removeHobby}
+                />
+              )}
+              {s.key === "links" && (
+                <LinksForm
+                  entries={data.links ?? []}
+                  onAdd={store.addLink}
+                  onUpdate={store.updateLink}
+                  onRemove={store.removeLink}
                 />
               )}
             </SectionCard>
