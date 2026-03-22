@@ -1,11 +1,23 @@
-import { Link } from 'react-router-dom';
-import { ArrowRight, FileText, Layers, Download, Zap } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Link } from "react-router-dom";
+import { ArrowRight, FileText, Layers, Download, Zap } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const features = [
-  { icon: Zap, title: 'Fast & Intuitive', desc: 'Fill in your details with a clean form — no clutter, no distractions.' },
-  { icon: Layers, title: '3 Beautiful Templates', desc: 'Minimal, Modern, and Creative. Switch instantly, preview in real-time.' },
-  { icon: Download, title: 'Export as PDF', desc: 'One click to download a print-ready A4 PDF of your resume.' },
+  {
+    icon: Zap,
+    title: "Fast & Intuitive",
+    desc: "Fill in your details with a clean form — no clutter, no distractions.",
+  },
+  {
+    icon: Layers,
+    title: "4 Beautiful Templates",
+    desc: "Clasic, Minimal, Modern, and Creative. Switch instantly, preview in real-time.",
+  },
+  {
+    icon: Download,
+    title: "Export as PDF",
+    desc: "One click to download a print-ready A4 PDF of your resume.",
+  },
 ];
 
 export default function Index() {
@@ -38,7 +50,8 @@ export default function Index() {
         </h1>
 
         <p className="text-muted-foreground text-lg max-w-md mb-8">
-          Fill in your details, pick a template, and download a polished A4 PDF — all in your browser.
+          Fill in your details, pick a template, and download a polished A4 PDF
+          — all in your browser.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-3">
@@ -48,7 +61,12 @@ export default function Index() {
               <ArrowRight className="w-4 h-4" />
             </Link>
           </Button>
-          <Button size="lg" variant="outline" asChild className="px-8 text-base h-12">
+          <Button
+            size="lg"
+            variant="outline"
+            asChild
+            className="px-8 text-base h-12"
+          >
             <Link to="/preview">Preview</Link>
           </Button>
         </div>
@@ -60,7 +78,9 @@ export default function Index() {
               <span className="w-2.5 h-2.5 rounded-full bg-destructive/70" />
               <span className="w-2.5 h-2.5 rounded-full bg-yellow-400/70" />
               <span className="w-2.5 h-2.5 rounded-full bg-green-400/70" />
-              <span className="text-xs text-muted-foreground ml-2 font-mono">resume-builder.app/create</span>
+              <span className="text-xs text-muted-foreground ml-2 font-mono">
+                resume-builder.app/create
+              </span>
             </div>
             <div className="p-8 flex gap-6">
               {/* Form mockup */}
@@ -71,9 +91,14 @@ export default function Index() {
                 <div className="h-16 bg-muted/70 border border-border rounded-md mt-2" />
                 <div className="h-3 bg-muted rounded w-1/4 mt-3" />
                 <div className="flex gap-2">
-                  {['Experience', 'Skills', 'Projects'].map(s => (
-                    <div key={s} className="h-6 px-3 bg-accent rounded-full flex items-center">
-                      <span className="text-[10px] text-accent-foreground font-medium">{s}</span>
+                  {["Experience", "Skills", "Projects"].map((s) => (
+                    <div
+                      key={s}
+                      className="h-6 px-3 bg-accent rounded-full flex items-center"
+                    >
+                      <span className="text-[10px] text-accent-foreground font-medium">
+                        {s}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -101,7 +126,10 @@ export default function Index() {
         {/* Features */}
         <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-3xl">
           {features.map(({ icon: Icon, title, desc }) => (
-            <div key={title} className="text-left p-5 bg-surface border border-border rounded-lg">
+            <div
+              key={title}
+              className="text-left p-5 bg-surface border border-border rounded-lg"
+            >
               <div className="w-8 h-8 rounded-md bg-accent flex items-center justify-center mb-3">
                 <Icon className="w-4 h-4 text-primary" />
               </div>

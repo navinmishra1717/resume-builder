@@ -81,16 +81,25 @@ export default function ClassicTemplate({ data }: Props) {
             : ""}
         </h1>
         {contactParts.length > 0 && (
-          <p className="text-sm text-[#444] mt-1">{contactParts.join("  ·  ")}</p>
+          <p className="text-sm text-[#444] mt-1">
+            {contactParts.join("  ·  ")}
+          </p>
         )}
         {sectionVisibility.links && links && links.length > 0 && (
           <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 mt-1">
-            {links.filter(l => l.name || l.link).map(l => (
-              <a key={l.id} href={l.link} target="_blank" rel="noreferrer"
-                className="text-[11px] text-[#1a1a1a] underline">
-                {l.name || l.link}
-              </a>
-            ))}
+            {links
+              .filter((l) => l.name || l.link)
+              .map((l) => (
+                <a
+                  key={l.id}
+                  href={l.link}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-[11px] text-[#1a1a1a] underline"
+                >
+                  {l.name || l.link}
+                </a>
+              ))}
           </div>
         )}
       </div>
@@ -134,7 +143,8 @@ export default function ClassicTemplate({ data }: Props) {
                   </div>
                   <div className="flex items-baseline justify-between">
                     <p className="font-bold text-sm uppercase tracking-wide">
-                      {exp.role || "Job Title"}, {exp.company}
+                      {exp.role || "Job Title"},{" "}
+                      {<span className="text-[#555]"> {exp.company} </span>}
                     </p>
                     {exp.location && (
                       <p className="text-[11px] text-[#555] shrink-0 ml-4">
@@ -234,15 +244,28 @@ export default function ClassicTemplate({ data }: Props) {
             </div>
             <div className="flex-1 pt-3 pb-3 pl-6 space-y-4">
               {projects.map((proj) => (
-                <div key={proj.id}>
-                  <p className="font-semibold text-sm">
-                    {proj.title || "Project"}
-                  </p>
+                <div key={proj.id} className="mb-4 last:mb-0">
+                  <div className="flex items-baseline gap-2">
+                    <h3 className="font-bold text-sm text-[#1a1a1a]">
+                      {proj.title || "Project"}
+                    </h3>
+                  </div>
+
+                  {/* Technologies */}
+                  {proj.technologies && (
+                    <p className="text-xs text-[#666] leading-tight">
+                      {proj.technologies}
+                    </p>
+                  )}
+
+                  {/* Description / Role */}
                   {proj.description && (
-                    <RichContent
-                      html={proj.description}
-                      className="mt-0.5 text-sm text-[#333] [&_ul]:list-disc [&_ul]:pl-4 [&_ol]:list-decimal [&_ol]:pl-4 [&_li]:mb-0.5"
-                    />
+                    <div className="mt-0.5">
+                      <RichContent
+                        html={proj.description}
+                        className="text-sm text-[#444] [&_ul]:list-disc [&_ul]:pl-4 [&_ol]:list-decimal [&_ol]:pl-4"
+                      />
+                    </div>
                   )}
                   {proj.link && (
                     <a
