@@ -78,11 +78,11 @@ export default function Preview() {
             <Button
               variant="outline"
               size="sm"
-              onClick={() => window.print()}
+              onClick={() => generateDocx(data)}
               className="gap-1.5 hidden sm:flex"
             >
-              <Printer className="w-3.5 h-3.5" />
-              Print
+              <FileDown className="w-3.5 h-3.5" />
+              Download DOCX
             </Button>
             <Button size="sm" onClick={handleDownloadPDF} className="gap-1.5">
               <Download className="w-3.5 h-3.5" />
