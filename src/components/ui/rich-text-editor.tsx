@@ -1,9 +1,10 @@
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Placeholder from '@tiptap/extension-placeholder';
-import { Bold, Italic, List, ListOrdered } from 'lucide-react';
+import Link from '@tiptap/extension-link';
+import { Bold, Italic, List, ListOrdered, Link2, Link2Off } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 
 interface RichTextEditorProps {
   value: string;
@@ -39,6 +40,14 @@ export function RichTextEditor({ value, onChange, placeholder, className, minRow
     extensions: [
       StarterKit,
       Placeholder.configure({ placeholder: placeholder ?? 'Start typing…' }),
+      Link.configure({
+        openOnClick: false,
+        HTMLAttributes: {
+          class: 'text-primary underline cursor-pointer',
+          rel: 'noopener noreferrer',
+          target: '_blank',
+        },
+      }),
     ],
     content: value,
     onUpdate({ editor }) {
@@ -46,7 +55,7 @@ export function RichTextEditor({ value, onChange, placeholder, className, minRow
     },
     editorProps: {
       attributes: {
-        class: 'outline-none min-h-[inherit] prose prose-sm max-w-none text-foreground leading-relaxed',
+        class: 'outline-none min-h-[inherit] prose prose-sm max-w-none text-foreground leading-relaxed [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:my-0.5 [&_a]:text-primary [&_a]:underline',
       },
     },
   });
@@ -60,12 +69,24 @@ export function RichTextEditor({ value, onChange, placeholder, className, minRow
     }
   }, [value, editor]);
 
+  const handleSetLink = useCallback(() => {
+    if (!editor) return;
+    const previousUrl = editor.getAttributes('link').href as string | undefined;
+    const url = window.prompt('Enter URL', previousUrl ?? 'https://');
+    if (url === null) return; // cancelled
+    if (url === '') {
+      editor.chain().focus().extendMarkRange('link').unsetLink().run();
+      return;
+    }
+    editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run();
+  }, [editor]);
+
   if (!editor) return null;
 
   return (
     <div className={cn('border border-input rounded-md bg-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2', className)}>
       {/* Toolbar */}
-      <div className="flex items-center gap-0.5 px-2 py-1.5 border-b border-border">
+      <div className="flex items-center gap-0.5 px-2 py-1.5 border-b border-border flex-wrap">
         <ToolbarButton
           onClick={() => editor.chain().focus().toggleBold().run()}
           active={editor.isActive('bold')}
@@ -95,6 +116,22 @@ export function RichTextEditor({ value, onChange, placeholder, className, minRow
         >
           <ListOrdered className="w-3.5 h-3.5" />
         </ToolbarButton>
+        <div className="w-px h-4 bg-border mx-1" />
+        <ToolbarButton
+          onClick={handleSetLink}
+          active={editor.isActive('link')}
+          title="Insert / edit link"
+        >
+          <Link2 className="w-3.5 h-3.5" />
+        </ToolbarButton>
+        {editor.isActive('link') && (
+          <ToolbarButton
+            onClick={() => editor.chain().focus().unsetLink().run()}
+            title="Remove link"
+          >
+            <Link2Off className="w-3.5 h-3.5" />
+          </ToolbarButton>
+        )}
       </div>
       {/* Editor */}
       <EditorContent

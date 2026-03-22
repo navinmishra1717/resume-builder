@@ -30,6 +30,7 @@ const defaultSectionVisibility: SectionVisibility = {
   projects: true,
   certifications: true,
   hobbies: false,
+  links: true,
 };
 
 const defaultData: ResumeData = {
@@ -41,6 +42,7 @@ const defaultData: ResumeData = {
   projects: [],
   certifications: [],
   hobbies: [],
+  links: [],
   selectedTemplate: "minimal",
   sectionVisibility: defaultSectionVisibility,
 };
