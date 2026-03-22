@@ -108,16 +108,20 @@ export default function ClassicTemplate({ data }: Props) {
 
       {/* Professional Summary */}
       {sectionVisibility.summary && summary && (
-        <div className="flex gap-0">
-          <div className="w-[160px] shrink-0 pt-3 pb-3 pr-6">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-[#555]">
-              Profile
-            </span>
+        <>
+          <div className="flex gap-0">
+            <div className="w-[160px] shrink-0 pt-3 pb-3 pr-6">
+              <span className="text-[10px] font-bold uppercase tracking-widest text-[#555]">
+                Profile
+              </span>
+            </div>
+            <div className="flex-1 pt-3 pb-3 pl-6">
+              <RichContent html={summary} />
+            </div>
           </div>
-          <div className="flex-1 pt-3 pb-3 pl-6">
-            <RichContent html={summary} />
-          </div>
-        </div>
+
+          <div className="border-t border-[#ccc]" />
+        </>
       )}
 
       {/* Experience */}

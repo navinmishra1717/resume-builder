@@ -35,8 +35,8 @@ const sections: SectionConfig[] = [
   { key: "personalInfo", label: "Personal Info" },
   { key: "summary", label: "Summary" },
   { key: "experience", label: "Experience" },
-  { key: "education", label: "Education" },
   { key: "skills", label: "Skills" },
+  { key: "education", label: "Education" },
   { key: "projects", label: "Projects" },
   { key: "certifications", label: "Certifications" },
   { key: "hobbies", label: "Hobbies & Interests" },
@@ -120,7 +120,11 @@ export default function Create() {
       backgroundColor: "#ffffff",
     });
     const imgData = canvas.toDataURL("image/png");
-    const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+    const pdf = new jsPDF({
+      orientation: "portrait",
+      unit: "mm",
+      format: "a4",
+    });
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
     pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
