@@ -41,6 +41,7 @@ export default function ClassicTemplate({ data }: Props) {
     projects,
     certifications,
     hobbies,
+    links,
     sectionVisibility,
   } = data;
 
