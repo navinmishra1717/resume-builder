@@ -238,7 +238,8 @@ export async function generateDocx(data: ResumeData): Promise<void> {
   if (sectionVisibility.projects && projects.length > 0) {
     children.push(sectionHeading("Projects"));
     projects.forEach((proj) => {
-      const titleRuns: (TextRun | ExternalHyperlink)[] = [
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const titleRuns: any[] = [
         new TextRun({ text: proj.title || "Project", bold: true, size: 22, font: "Calibri" }),
       ];
       if (proj.link) {
@@ -247,7 +248,7 @@ export async function generateDocx(data: ResumeData): Promise<void> {
           new ExternalHyperlink({ link: proj.link, children: [new TextRun({ text: "↗ Link", style: "Hyperlink", size: 18, font: "Calibri" })] })
         );
       }
-      children.push(new Paragraph({ children: titleRuns as TextRun[], spacing: { before: 120, after: 40 } }));
+      children.push(new Paragraph({ children: titleRuns, spacing: { before: 120, after: 40 } }));
       if (proj.technologies) children.push(bodyText(proj.technologies, { italic: true }));
       htmlToPlainLines(proj.description).forEach((line) =>
         children.push(new Paragraph({ children: [new TextRun({ text: line, size: 20, font: "Calibri" })], spacing: { after: 40 }, indent: { left: 360 } }))
