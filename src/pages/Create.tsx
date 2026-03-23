@@ -80,7 +80,11 @@ function SectionCard({
           <span className="font-semibold text-sm text-foreground">{title}</span>
         </div>
         <button
-          className={`flex items-center gap-1 text-xs px-2 py-0.5 rounded transition-colors ${visible ? "text-primary bg-accent" : "text-muted-foreground hover:bg-muted"}`}
+          className={`flex items-center gap-1 text-xs px-2 py-0.5 rounded transition-colors ${
+            visible
+              ? "text-primary bg-accent"
+              : "text-muted-foreground hover:bg-muted"
+          }`}
           onClick={(e) => {
             e.stopPropagation();
             onToggle();
@@ -139,7 +143,7 @@ export default function Create() {
     <div className="min-h-screen bg-background flex flex-col">
       {/* Header */}
       <header className="sticky top-0 z-50 bg-surface border-b border-border">
-        <div className="max-w-screen-xl mx-auto px-4 h-14 flex items-center justify-between gap-4">
+        <div className="max-w-screen-xl mx-auto px-3 sm:px-4 h-14 flex items-center justify-between gap-2 sm:gap-4">
           <Link
             to="/"
             className="flex items-center gap-2 font-semibold text-foreground shrink-0"
@@ -148,60 +152,88 @@ export default function Create() {
             <span className="hidden sm:inline">Resume Builder</span>
           </Link>
 
-          {/* Mobile tabs */}
+          {/* Mobile Edit/Preview tabs */}
           <div className="flex md:hidden gap-1 bg-muted rounded-lg p-1">
             <button
               onClick={() => setMobileTab("edit")}
-              className={`px-3 py-1 text-sm rounded-md transition-colors ${mobileTab === "edit" ? "bg-surface text-foreground shadow-card font-medium" : "text-muted-foreground"}`}
+              className={`px-3 py-1 text-sm rounded-md transition-colors ${
+                mobileTab === "edit"
+                  ? "bg-surface text-foreground shadow-card font-medium"
+                  : "text-muted-foreground"
+              }`}
             >
               Edit
             </button>
             <button
               onClick={() => setMobileTab("preview")}
-              className={`px-3 py-1 text-sm rounded-md transition-colors ${mobileTab === "preview" ? "bg-surface text-foreground shadow-card font-medium" : "text-muted-foreground"}`}
+              className={`px-3 py-1 text-sm rounded-md transition-colors ${
+                mobileTab === "preview"
+                  ? "bg-surface text-foreground shadow-card font-medium"
+                  : "text-muted-foreground"
+              }`}
             >
               Preview
             </button>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             <Button
               variant="outline"
               size="sm"
               onClick={handleDownloadDocx}
-              className="hidden sm:flex gap-1.5"
+              className="gap-1 sm:gap-1.5 px-2 sm:px-3"
             >
               <FileDown className="w-3.5 h-3.5" />
-              Download DOCX
+              <span className="hidden sm:inline">Download </span>DOCX
             </Button>
-            <Button size="sm" onClick={handleDownloadPDF} className="gap-1.5">
+            <Button
+              size="sm"
+              onClick={handleDownloadPDF}
+              className="gap-1 sm:gap-1.5 px-2 sm:px-3"
+            >
               <Download className="w-3.5 h-3.5" />
-              Download PDF
+              <span className="hidden sm:inline">Download </span>PDF
             </Button>
+            <Link
+              to="/preview"
+              className="text-xs text-primary hover:underline hidden md:inline whitespace-nowrap"
+            >
+              Full preview →
+            </Link>
           </div>
         </div>
       </header>
 
-      <div className="flex-1 max-w-screen-xl mx-auto w-full flex gap-0 md:gap-6 px-4 py-6">
+      {/* Main content */}
+      <div className="flex-1 max-w-screen-xl mx-auto w-full flex flex-col md:flex-row gap-0 md:gap-6 px-3 sm:px-4 py-4 sm:py-6">
         {/* Left: Form pane */}
         <div
-          className={`flex-1 min-w-0 space-y-3 ${mobileTab === "preview" ? "hidden md:block" : "block"}`}
-          style={{ maxWidth: "60%" }}
+          className={`flex-1 min-w-0 space-y-3 ${
+            mobileTab === "preview" ? "hidden md:block" : "block"
+          }`}
         >
           {/* Template picker */}
           <div className="section-card p-4">
             <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest mb-3">
               Template
             </p>
-            <div className="grid grid-cols-4 gap-2">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
               {templates.map((t) => (
                 <button
                   key={t.id}
                   onClick={() => store.setTemplate(t.id)}
-                  className={`p-3 rounded-md border text-left transition-all ${data.selectedTemplate === t.id ? "border-primary bg-accent" : "border-border hover:border-primary/50 hover:bg-muted/30"}`}
+                  className={`p-3 rounded-md border text-left transition-all ${
+                    data.selectedTemplate === t.id
+                      ? "border-primary bg-accent"
+                      : "border-border hover:border-primary/50 hover:bg-muted/30"
+                  }`}
                 >
                   <p
-                    className={`text-sm font-semibold ${data.selectedTemplate === t.id ? "text-primary" : "text-foreground"}`}
+                    className={`text-sm font-semibold ${
+                      data.selectedTemplate === t.id
+                        ? "text-primary"
+                        : "text-foreground"
+                    }`}
                   >
                     {t.label}
                   </p>
@@ -296,9 +328,11 @@ export default function Create() {
 
         {/* Right: Live preview */}
         <div
-          className={`md:w-[40%] shrink-0 ${mobileTab === "edit" ? "hidden md:block" : "block w-full"}`}
+          className={`md:w-[42%] lg:w-[40%] shrink-0 ${
+            mobileTab === "edit" ? "hidden md:block" : "block w-full"
+          }`}
         >
-          <div className="sticky top-20">
+          <div className="md:sticky md:top-20">
             <div className="flex items-center justify-between mb-3">
               <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">
                 Live Preview
@@ -310,19 +344,29 @@ export default function Create() {
                 Full preview →
               </Link>
             </div>
+
+            {/* Scaled preview container */}
             <div className="bg-border rounded-lg overflow-hidden">
-              <div
-                ref={previewRef}
-                id="resume-preview"
-                className="origin-top bg-white"
-                style={{
-                  transform: "scale(0.65)",
-                  transformOrigin: "top left",
-                  width: "153.8%",
-                  minHeight: "400px",
-                }}
-              >
-                <ResumeRenderer data={data} />
+              {/*
+                We use a CSS custom property trick:
+                The inner div is 210mm wide (A4), scaled down to fit.
+                On mobile the tab shows the preview full-width, so we scale
+                to roughly 65% of the container. On desktop the sidebar is fixed.
+              */}
+              <div className="relative w-full" style={{ paddingBottom: "calc(297mm * 0.65 / 210mm * 100%)" }}>
+                <div
+                  ref={previewRef}
+                  id="resume-preview"
+                  className="absolute top-0 left-0 origin-top-left bg-white"
+                  style={{
+                    width: "210mm",
+                    minHeight: "297mm",
+                    transform: "scale(0.65)",
+                    transformOrigin: "top left",
+                  }}
+                >
+                  <ResumeRenderer data={data} />
+                </div>
               </div>
             </div>
           </div>
