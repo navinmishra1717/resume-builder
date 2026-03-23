@@ -153,9 +153,6 @@ export default function Preview() {
           </div>
         </div>
       </main>
-      <div className="hidden print:block">
-        <ResumeRenderer data={data} />
-      </div>
     </div>
   );
 }

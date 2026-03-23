@@ -359,9 +359,6 @@ export default function Create() {
           </div>
         </div>
       </div>
-      <div className="hidden print:block" aria-hidden="true">
-        <ResumeRenderer data={data} />
-      </div>
     </div>
   );
 }

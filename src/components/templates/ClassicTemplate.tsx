@@ -248,7 +248,7 @@ export default function ClassicTemplate({ data }: Props) {
             </div>
             <div className="flex-1 pt-3 pb-3 pl-6 space-y-4">
               {projects.map((proj) => (
-                <div key={proj.id} className="mb-4 last:mb-0">
+                <div key={proj.id} className="mb-4 last:mb-0 print-section">
                   <div className="flex items-baseline gap-2">
                     <h3 className="font-bold text-sm text-[#1a1a1a]">
                       {proj.title || "Project"}
