@@ -355,7 +355,9 @@ export default function Create() {
                     transformOrigin: "top left",
                   }}
                 >
-                  <ResumeRenderer data={data} />
+                  <div ref={pdfContentRef}>
+                    <ResumeRenderer data={data} />
+                  </div>
                 </div>
               </div>
             </div>
