@@ -123,6 +123,8 @@ export default function Create() {
     );
   };
 
+  const pdfContentRef = useRef<HTMLDivElement>(null);
+
   const handleDownloadDocx = async () => {
     await generateDocx(data);
   };
