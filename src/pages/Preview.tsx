@@ -6,6 +6,7 @@ import { useResume } from "@/store/ResumeContext";
 import { TemplateId } from "@/types/resume";
 import ResumeRenderer from "@/components/templates/ResumeRenderer";
 import { generateDocx } from "@/lib/docxExport";
+import { exportElementToPDF } from "@/lib/pdfExport";
 
 const A4_WIDTH_PX = 794; // 210mm at 96dpi
 

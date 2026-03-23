@@ -116,23 +116,11 @@ export default function Create() {
 
   const handleDownloadPDF = async () => {
     if (!previewRef.current) return;
-    const { default: jsPDF } = await import("jspdf");
-    const { default: html2canvas } = await import("html2canvas");
-    const canvas = await html2canvas(previewRef.current, {
-      scale: 2,
-      useCORS: true,
-      backgroundColor: "#ffffff",
-    });
-    const imgData = canvas.toDataURL("image/png");
-    const pdf = new jsPDF({
-      orientation: "portrait",
-      unit: "mm",
-      format: "a4",
-    });
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-    pdf.save(`${data.personalInfo.name || "resume"}.pdf`);
+    const { exportElementToPDF } = await import("@/lib/pdfExport");
+    await exportElementToPDF(
+      previewRef.current,
+      `${data.personalInfo.name || "resume"}.pdf`
+    );
   };
 
   const handleDownloadDocx = async () => {
