@@ -43,43 +43,68 @@ export default function Preview() {
     <div className="min-h-screen bg-background flex flex-col">
       {/* Header */}
       <header className="sticky top-0 z-50 bg-surface border-b border-border print:hidden">
-        <div className="max-w-screen-lg mx-auto px-4 h-14 flex items-center gap-3">
-          <Button
-            variant="ghost"
-            size="sm"
-            asChild
-            className="gap-1.5 text-muted-foreground"
-          >
-            <Link to="/create">
-              <ArrowLeft className="w-3.5 h-3.5" />
-              Back to Editor
-            </Link>
-          </Button>
+        <div className="max-w-screen-lg mx-auto px-3 sm:px-4 h-auto min-h-14 flex flex-col sm:flex-row sm:items-center gap-2 py-2 sm:py-0">
+          {/* Row 1: back + title + download actions */}
+          <div className="flex items-center gap-2 w-full sm:w-auto">
+            <Button
+              variant="ghost"
+              size="sm"
+              asChild
+              className="gap-1.5 text-muted-foreground shrink-0"
+            >
+              <Link to="/create">
+                <ArrowLeft className="w-3.5 h-3.5" />
+                <span className="hidden xs:inline">Back</span>
+              </Link>
+            </Button>
 
-          <div className="flex items-center gap-2 font-semibold ml-2">
-            <FileText className="w-4 h-4 text-primary" />
-            <span className="text-sm">Resume Preview</span>
+            <div className="flex items-center gap-1.5 font-semibold">
+              <FileText className="w-4 h-4 text-primary shrink-0" />
+              <span className="text-sm whitespace-nowrap">Resume Preview</span>
+            </div>
+
+            {/* Download buttons — right-aligned on mobile row 1 */}
+            <div className="flex items-center gap-2 ml-auto sm:hidden">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => generateDocx(data)}
+                className="gap-1 px-2"
+              >
+                <FileDown className="w-3.5 h-3.5" />
+                <span className="text-xs">DOCX</span>
+              </Button>
+              <Button size="sm" onClick={handleDownloadPDF} className="gap-1 px-2">
+                <Download className="w-3.5 h-3.5" />
+                <span className="text-xs">PDF</span>
+              </Button>
+            </div>
           </div>
 
-          {/* Template switcher */}
-          <div className="ml-auto flex items-center gap-1 bg-muted rounded-lg p-1">
+          {/* Template switcher — full width on mobile */}
+          <div className="flex items-center gap-1 bg-muted rounded-lg p-1 w-full sm:w-auto sm:ml-auto overflow-x-auto">
             {templates.map((t) => (
               <button
                 key={t.id}
                 onClick={() => setTemplate(t.id)}
-                className={`px-3 py-1 text-xs rounded-md transition-colors font-medium ${data.selectedTemplate === t.id ? "bg-surface text-foreground shadow-card" : "text-muted-foreground hover:text-foreground"}`}
+                className={`px-3 py-1 text-xs rounded-md transition-colors font-medium whitespace-nowrap flex-1 sm:flex-none ${
+                  data.selectedTemplate === t.id
+                    ? "bg-surface text-foreground shadow-card"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
               >
                 {t.label}
               </button>
             ))}
           </div>
 
-          <div className="flex items-center gap-2">
+          {/* Download buttons — hidden on mobile (shown above), visible sm+ */}
+          <div className="hidden sm:flex items-center gap-2">
             <Button
               variant="outline"
               size="sm"
               onClick={() => generateDocx(data)}
-              className="gap-1.5 hidden sm:flex"
+              className="gap-1.5"
             >
               <FileDown className="w-3.5 h-3.5" />
               Download DOCX
@@ -92,15 +117,43 @@ export default function Preview() {
         </div>
       </header>
 
-      {/* A4 preview */}
-      <main className="flex-1 flex justify-center py-8 px-4 print:py-0 print:px-0">
-        <div
-          ref={previewRef}
-          id="resume-preview"
-          className="bg-white shadow-resume print:shadow-none"
-          style={{ width: "210mm", minHeight: "297mm" }}
-        >
-          <ResumeRenderer data={data} />
+      {/* A4 preview — scales down on small screens */}
+      <main className="flex-1 flex justify-center py-6 px-2 sm:px-4 print:py-0 print:px-0 overflow-x-auto">
+        {/* Outer wrapper scales the A4 sheet to fit the viewport */}
+        <div className="w-full flex justify-center">
+          <div
+            className="origin-top shrink-0"
+            style={{
+              /* On small screens, scale the 210mm sheet to fit the available width */
+              width: "210mm",
+              transform: "none",
+            }}
+          >
+            {/* Responsive scaling wrapper */}
+            <style>{`
+              @media (max-width: 900px) {
+                .resume-scale-wrapper {
+                  transform-origin: top center;
+                  transform: scale(var(--resume-scale, 1));
+                  margin-bottom: calc((var(--resume-scale, 1) - 1) * 297mm);
+                }
+              }
+            `}</style>
+            <div
+              ref={previewRef}
+              id="resume-preview"
+              className="resume-scale-wrapper bg-white shadow-resume print:shadow-none"
+              style={
+                {
+                  width: "210mm",
+                  minHeight: "297mm",
+                  "--resume-scale": "clamp(0.35, calc((100vw - 16px) / 794px), 1)",
+                } as React.CSSProperties
+              }
+            >
+              <ResumeRenderer data={data} />
+            </div>
+          </div>
         </div>
       </main>
     </div>
