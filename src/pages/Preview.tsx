@@ -35,13 +35,14 @@ function useContainerScale(padding = 32) {
 
 export default function Preview() {
   const { data, setTemplate } = useResume();
-  const previewRef = useRef<HTMLDivElement>(null);
+  const scaleWrapperRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   const scale = useContainerScale(32);
 
   const handleDownloadPDF = async () => {
-    if (!previewRef.current) return;
+    if (!contentRef.current) return;
     await exportElementToPDF(
-      previewRef.current,
+      contentRef.current,
       `${data.personalInfo.name || "resume"}.pdf`
     );
   };
@@ -126,7 +127,7 @@ export default function Preview() {
           style={{ width: A4_WIDTH_PX * scale, height: scaledHeight }}
         >
           <div
-            ref={previewRef}
+            ref={scaleWrapperRef}
             id="resume-preview"
             className="absolute top-0 left-0 origin-top-left bg-white shadow-resume print:shadow-none print:transform-none print:static"
             style={{
@@ -135,7 +136,9 @@ export default function Preview() {
               transform: `scale(${scale})`,
             }}
           >
-            <ResumeRenderer data={data} />
+            <div ref={contentRef}>
+              <ResumeRenderer data={data} />
+            </div>
           </div>
         </div>
       </main>

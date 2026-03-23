@@ -115,13 +115,15 @@ export default function Create() {
   const [mobileTab, setMobileTab] = useState<"edit" | "preview">("edit");
 
   const handleDownloadPDF = async () => {
-    if (!previewRef.current) return;
+    if (!pdfContentRef.current) return;
     const { exportElementToPDF } = await import("@/lib/pdfExport");
     await exportElementToPDF(
-      previewRef.current,
+      pdfContentRef.current,
       `${data.personalInfo.name || "resume"}.pdf`
     );
   };
+
+  const pdfContentRef = useRef<HTMLDivElement>(null);
 
   const handleDownloadDocx = async () => {
     await generateDocx(data);
@@ -353,7 +355,9 @@ export default function Create() {
                     transformOrigin: "top left",
                   }}
                 >
-                  <ResumeRenderer data={data} />
+                  <div ref={pdfContentRef}>
+                    <ResumeRenderer data={data} />
+                  </div>
                 </div>
               </div>
             </div>
