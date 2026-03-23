@@ -141,7 +141,11 @@ export default function Index() {
       </main>
 
       <footer className="border-t border-border py-5 text-center text-xs text-muted-foreground">
-        Resume Builder — All data is stored locally in your browser.
+        <p>Resume Builder — All data is stored locally in your browser.</p>
+        <p>
+          <span>© 2026 </span>
+          <span>by Navin Mishra</span>
+        </p>
       </footer>
     </div>
   );
