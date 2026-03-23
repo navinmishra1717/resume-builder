@@ -118,38 +118,32 @@ export default function Preview() {
       </header>
 
       {/* A4 preview — scales down on small screens */}
-      <main className="flex-1 flex justify-center py-6 px-2 sm:px-4 print:py-0 print:px-0 overflow-x-auto">
-        {/* Outer wrapper scales the A4 sheet to fit the viewport */}
-        <div className="w-full flex justify-center">
+      <main className="flex-1 flex justify-center py-6 px-2 sm:px-4 print:py-0 print:px-0">
+        {/*
+          Scaling trick:
+          - The A4 sheet is 210mm ≈ 794px wide at 96dpi.
+          - We wrap it in a container whose width = 100vw - padding.
+          - The inner sheet is transformed to scale(containerWidth / 794).
+          - A padding-bottom spacer preserves the layout height after scaling.
+        */}
+        <div className="w-full max-w-[794px]">
           <div
-            className="origin-top shrink-0"
+            className="relative"
             style={{
-              /* On small screens, scale the 210mm sheet to fit the available width */
-              width: "210mm",
-              transform: "none",
+              /* Height of the visible area after scaling */
+              height: "calc(297mm * min(1, (100vw - 16px) / 794px))",
             }}
           >
-            {/* Responsive scaling wrapper */}
-            <style>{`
-              @media (max-width: 900px) {
-                .resume-scale-wrapper {
-                  transform-origin: top center;
-                  transform: scale(var(--resume-scale, 1));
-                  margin-bottom: calc((var(--resume-scale, 1) - 1) * 297mm);
-                }
-              }
-            `}</style>
             <div
               ref={previewRef}
               id="resume-preview"
-              className="resume-scale-wrapper bg-white shadow-resume print:shadow-none"
-              style={
-                {
-                  width: "210mm",
-                  minHeight: "297mm",
-                  "--resume-scale": "clamp(0.35, calc((100vw - 16px) / 794px), 1)",
-                } as React.CSSProperties
-              }
+              className="absolute top-0 left-0 origin-top-left bg-white shadow-resume print:shadow-none print:transform-none"
+              style={{
+                width: "210mm",
+                minHeight: "297mm",
+                /* Scale the sheet to fill the container width on small screens */
+                transform: "scale(min(1, (100vw - 16px) / 794))",
+              }}
             >
               <ResumeRenderer data={data} />
             </div>
