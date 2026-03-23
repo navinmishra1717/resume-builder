@@ -35,7 +35,8 @@ function useContainerScale(padding = 32) {
 
 export default function Preview() {
   const { data, setTemplate } = useResume();
-  const previewRef = useRef<HTMLDivElement>(null);
+  const scaleWrapperRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   const scale = useContainerScale(32);
 
   const handleDownloadPDF = async () => {
