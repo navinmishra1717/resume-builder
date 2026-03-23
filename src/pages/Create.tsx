@@ -115,10 +115,10 @@ export default function Create() {
   const [mobileTab, setMobileTab] = useState<"edit" | "preview">("edit");
 
   const handleDownloadPDF = async () => {
-    if (!previewRef.current) return;
+    if (!pdfContentRef.current) return;
     const { exportElementToPDF } = await import("@/lib/pdfExport");
     await exportElementToPDF(
-      previewRef.current,
+      pdfContentRef.current,
       `${data.personalInfo.name || "resume"}.pdf`
     );
   };
