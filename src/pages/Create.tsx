@@ -23,6 +23,7 @@ import HobbiesForm from "@/components/forms/HobbiesForm";
 import LinksForm from "@/components/forms/LinksForm";
 import ResumeRenderer from "@/components/templates/ResumeRenderer";
 import { generateDocx } from "@/lib/docxExport";
+import { exportToPDF } from "@/lib/pdfExport";
 
 type SectionKey = keyof SectionVisibility;
 
@@ -114,16 +115,9 @@ export default function Create() {
   const previewRef = useRef<HTMLDivElement>(null);
   const [mobileTab, setMobileTab] = useState<"edit" | "preview">("edit");
 
-  const handleDownloadPDF = async () => {
-    if (!pdfContentRef.current) return;
-    const { exportElementToPDF } = await import("@/lib/pdfExport");
-    await exportElementToPDF(
-      pdfContentRef.current,
-      `${data.personalInfo.name || "resume"}.pdf`
-    );
+  const handleDownloadPDF = () => {
+    exportToPDF(data.personalInfo.name || "resume");
   };
-
-  const pdfContentRef = useRef<HTMLDivElement>(null);
 
   const handleDownloadDocx = async () => {
     await generateDocx(data);
@@ -343,7 +337,10 @@ export default function Create() {
                 On mobile the tab shows the preview full-width, so we scale
                 to roughly 65% of the container. On desktop the sidebar is fixed.
               */}
-              <div className="relative w-full" style={{ paddingBottom: "calc(297mm * 0.65 / 210mm * 100%)" }}>
+              <div
+                className="relative w-full"
+                style={{ paddingBottom: "calc(297mm * 0.65 / 210mm * 100%)" }}
+              >
                 <div
                   ref={previewRef}
                   id="resume-preview"
@@ -355,14 +352,15 @@ export default function Create() {
                     transformOrigin: "top left",
                   }}
                 >
-                  <div ref={pdfContentRef}>
-                    <ResumeRenderer data={data} />
-                  </div>
+                  <ResumeRenderer data={data} />
                 </div>
               </div>
             </div>
           </div>
         </div>
+      </div>
+      <div className="hidden print:block" aria-hidden="true">
+        <ResumeRenderer data={data} />
       </div>
     </div>
   );

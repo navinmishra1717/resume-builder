@@ -6,7 +6,7 @@ import { useResume } from "@/store/ResumeContext";
 import { TemplateId } from "@/types/resume";
 import ResumeRenderer from "@/components/templates/ResumeRenderer";
 import { generateDocx } from "@/lib/docxExport";
-import { exportElementToPDF } from "@/lib/pdfExport";
+import { exportToPDF } from "@/lib/pdfExport";
 
 const A4_WIDTH_PX = 794; // 210mm at 96dpi
 
@@ -36,15 +36,10 @@ function useContainerScale(padding = 32) {
 export default function Preview() {
   const { data, setTemplate } = useResume();
   const scaleWrapperRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
   const scale = useContainerScale(32);
 
-  const handleDownloadPDF = async () => {
-    if (!contentRef.current) return;
-    await exportElementToPDF(
-      contentRef.current,
-      `${data.personalInfo.name || "resume"}.pdf`
-    );
+  const handleDownloadPDF = () => {
+    exportToPDF(data.personalInfo.name || "resume");
   };
 
   // Scaled height so the outer container doesn't collapse
@@ -55,10 +50,14 @@ export default function Preview() {
       {/* ── Header ── */}
       <header className="sticky top-0 z-50 bg-surface border-b border-border print:hidden">
         <div className="max-w-screen-lg mx-auto px-3 sm:px-4 py-2 sm:py-0 sm:h-14 flex flex-col sm:flex-row sm:items-center gap-2">
-
           {/* Row 1 (mobile) / inline (desktop): back + title + mobile download buttons */}
           <div className="flex items-center gap-2 w-full sm:w-auto">
-            <Button variant="ghost" size="sm" asChild className="gap-1.5 text-muted-foreground shrink-0">
+            <Button
+              variant="ghost"
+              size="sm"
+              asChild
+              className="gap-1.5 text-muted-foreground shrink-0"
+            >
               <Link to="/create">
                 <ArrowLeft className="w-3.5 h-3.5" />
                 <span className="hidden sm:inline">Back to Editor</span>
@@ -72,11 +71,20 @@ export default function Preview() {
 
             {/* Mobile-only compact download buttons */}
             <div className="flex items-center gap-1.5 ml-auto sm:hidden">
-              <Button variant="outline" size="sm" onClick={() => generateDocx(data)} className="gap-1 px-2 text-xs">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => generateDocx(data)}
+                className="gap-1 px-2 text-xs"
+              >
                 <FileDown className="w-3.5 h-3.5" />
                 DOCX
               </Button>
-              <Button size="sm" onClick={handleDownloadPDF} className="gap-1 px-2 text-xs">
+              <Button
+                size="sm"
+                onClick={handleDownloadPDF}
+                className="gap-1 px-2 text-xs"
+              >
                 <Download className="w-3.5 h-3.5" />
                 PDF
               </Button>
@@ -103,7 +111,12 @@ export default function Preview() {
 
             {/* Desktop-only full-label buttons */}
             <div className="hidden sm:flex items-center gap-2 shrink-0">
-              <Button variant="outline" size="sm" onClick={() => generateDocx(data)} className="gap-1.5">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => generateDocx(data)}
+                className="gap-1.5"
+              >
                 <FileDown className="w-3.5 h-3.5" />
                 Download DOCX
               </Button>
@@ -136,12 +149,13 @@ export default function Preview() {
               transform: `scale(${scale})`,
             }}
           >
-            <div ref={contentRef}>
-              <ResumeRenderer data={data} />
-            </div>
+            <ResumeRenderer data={data} />
           </div>
         </div>
       </main>
+      <div className="hidden print:block">
+        <ResumeRenderer data={data} />
+      </div>
     </div>
   );
 }

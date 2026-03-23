@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -95,7 +95,11 @@
 
   body {
     @apply bg-background text-foreground;
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-family:
+      "Inter",
+      system-ui,
+      -apple-system,
+      sans-serif;
     -webkit-font-smoothing: antialiased;
   }
 }
@@ -111,8 +115,14 @@
   }
 
   @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(4px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   .section-card {
@@ -154,5 +164,71 @@
   @page {
     size: A4;
     margin: 0;
+  }
+
+  @media print {
+    /* 1. Page setup — A4, no margins (resume handles its own padding) */
+    @page {
+      size: A4 portrait;
+      margin: 0;
+    }
+
+    /* 2. Hide everything by default */
+    body * {
+      visibility: hidden;
+    }
+
+    /* 3. Show only the print-only ResumeRenderer and all its children */
+    .print\:block,
+    .print\:block * {
+      visibility: visible;
+    }
+
+    /* 4. Position the resume at the very top-left of the page */
+    .print\:block {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 210mm;
+      min-height: 297mm;
+
+      /* Remove any screen-side transforms or shadows */
+      transform: none !important;
+      box-shadow: none !important;
+      background: #ffffff !important;
+    }
+
+    /* 5. Natural page breaks — never break inside key blocks */
+    h1,
+    h2,
+    h3,
+    h4,
+    section,
+    .resume-section {
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    /* 6. Lists render correctly (Tailwind JIT compound selectors don't apply in print) */
+    ul {
+      list-style-type: disc !important;
+      padding-left: 1.25rem !important;
+    }
+    ol {
+      list-style-type: decimal !important;
+      padding-left: 1.25rem !important;
+    }
+    li {
+      display: list-item !important;
+    }
+    a {
+      text-decoration: underline !important;
+    }
+
+    /* 7. Ensure colors print — some browsers strip backgrounds/colors by default */
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
   }
 }
