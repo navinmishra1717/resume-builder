@@ -40,9 +40,9 @@ export default function Preview() {
   const scale = useContainerScale(32);
 
   const handleDownloadPDF = async () => {
-    if (!previewRef.current) return;
+    if (!contentRef.current) return;
     await exportElementToPDF(
-      previewRef.current,
+      contentRef.current,
       `${data.personalInfo.name || "resume"}.pdf`
     );
   };
