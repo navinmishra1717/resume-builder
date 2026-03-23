@@ -6,6 +6,7 @@ import { useResume } from "@/store/ResumeContext";
 import { TemplateId } from "@/types/resume";
 import ResumeRenderer from "@/components/templates/ResumeRenderer";
 import { generateDocx } from "@/lib/docxExport";
+import { exportElementToPDF } from "@/lib/pdfExport";
 
 const A4_WIDTH_PX = 794; // 210mm at 96dpi
 
@@ -39,19 +40,10 @@ export default function Preview() {
 
   const handleDownloadPDF = async () => {
     if (!previewRef.current) return;
-    const { default: jsPDF } = await import("jspdf");
-    const { default: html2canvas } = await import("html2canvas");
-    const canvas = await html2canvas(previewRef.current, {
-      scale: 2,
-      useCORS: true,
-      backgroundColor: "#ffffff",
-    });
-    const imgData = canvas.toDataURL("image/png");
-    const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-    pdf.save(`${data.personalInfo.name || "resume"}.pdf`);
+    await exportElementToPDF(
+      previewRef.current,
+      `${data.personalInfo.name || "resume"}.pdf`
+    );
   };
 
   // Scaled height so the outer container doesn't collapse
