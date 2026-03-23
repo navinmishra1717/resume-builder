@@ -127,7 +127,7 @@ export default function Preview() {
           style={{ width: A4_WIDTH_PX * scale, height: scaledHeight }}
         >
           <div
-            ref={previewRef}
+            ref={scaleWrapperRef}
             id="resume-preview"
             className="absolute top-0 left-0 origin-top-left bg-white shadow-resume print:shadow-none print:transform-none print:static"
             style={{
@@ -136,7 +136,9 @@ export default function Preview() {
               transform: `scale(${scale})`,
             }}
           >
-            <ResumeRenderer data={data} />
+            <div ref={contentRef}>
+              <ResumeRenderer data={data} />
+            </div>
           </div>
         </div>
       </main>
