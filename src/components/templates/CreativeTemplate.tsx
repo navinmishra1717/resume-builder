@@ -8,9 +8,7 @@ function RichContent({ html, className }: { html: string; className?: string }) 
   return <p className={className}>{html}</p>;
 }
 
-interface Props {
-  data: ResumeData;
-}
+interface Props { data: ResumeData; }
 
 export default function CreativeTemplate({ data }: Props) {
   const { personalInfo, education, experience, skills, projects, certifications, hobbies, links, sectionVisibility } = data;
@@ -29,11 +27,9 @@ export default function CreativeTemplate({ data }: Props) {
 
       <div className="p-8">
         {/* Name + contact row */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-2 gap-3">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-2 gap-3 resume-entry">
           <div>
-            <h1 className="text-4xl font-black tracking-tighter text-[#111827]">
-              {personalInfo.name || "Your Name"}
-            </h1>
+            <h1 className="text-4xl font-black tracking-tighter text-[#111827]">{personalInfo.name || "Your Name"}</h1>
           </div>
           <div className="text-right text-xs text-[#6B7280] space-y-0.5">
             {personalInfo.email && <p>{personalInfo.email}</p>}
@@ -44,10 +40,9 @@ export default function CreativeTemplate({ data }: Props) {
 
         {/* Links row */}
         {sectionVisibility.links && links && links.length > 0 && (
-          <div className="flex flex-wrap gap-x-4 gap-y-1 mb-5">
+          <div className="flex flex-wrap gap-x-4 gap-y-1 mb-5 resume-entry">
             {links.filter(l => l.name || l.link).map(l => (
-              <a key={l.id} href={l.link} target="_blank" rel="noreferrer"
-                className="text-[#2563EB] text-xs underline">
+              <a key={l.id} href={l.link} target="_blank" rel="noreferrer" className="text-[#2563EB] text-xs underline">
                 {l.name || l.link}
               </a>
             ))}
@@ -57,7 +52,7 @@ export default function CreativeTemplate({ data }: Props) {
         <div className="grid grid-cols-1 gap-5">
           {/* Summary */}
           {sectionVisibility.summary && data.summary && (
-            <section>
+            <section className="resume-section">
               <h2 className="flex items-center gap-2 text-base font-black uppercase tracking-widest text-[#7C3AED] mb-3">
                 <span className="inline-block w-6 h-0.5 bg-[#7C3AED]" />Profile
               </h2>
@@ -67,13 +62,13 @@ export default function CreativeTemplate({ data }: Props) {
 
           {/* Experience */}
           {sectionVisibility.experience && experience.length > 0 && (
-            <section>
+            <section className="resume-section">
               <h2 className="flex items-center gap-2 text-base font-black uppercase tracking-widest text-[#2563EB] mb-3">
                 <span className="inline-block w-6 h-0.5 bg-[#2563EB]" />Experience
               </h2>
               <div className="space-y-4 ml-2">
                 {experience.map((exp) => (
-                  <div key={exp.id} className="pl-3 border-l-2 border-[#BFDBFE]">
+                  <div key={exp.id} className="pl-3 border-l-2 border-[#BFDBFE] resume-entry">
                     <div className="flex justify-between items-start">
                       <div>
                         <p className="font-bold text-[#111827]">{exp.role || "Job Title"}</p>
@@ -94,13 +89,13 @@ export default function CreativeTemplate({ data }: Props) {
 
           {/* Skills */}
           {sectionVisibility.skills && skills.length > 0 && (
-            <section>
+            <section className="resume-section">
               <h2 className="flex items-center gap-2 text-base font-black uppercase tracking-widest text-[#7C3AED] mb-3">
                 <span className="inline-block w-6 h-0.5 bg-[#7C3AED]" />Skills
               </h2>
               <div className="ml-2 space-y-3">
                 {Object.entries(skillsByLevel).map(([level, group]) => (
-                  <div key={level}>
+                  <div key={level} className="resume-entry">
                     <p className="text-[10px] font-bold uppercase tracking-widest text-[#777] mb-1">{level}</p>
                     <p className="text-sm text-[#1a1a1a]">{group.map((s) => s.skill).join(", ")}</p>
                   </div>
@@ -111,13 +106,13 @@ export default function CreativeTemplate({ data }: Props) {
 
           {/* Education */}
           {sectionVisibility.education && education.length > 0 && (
-            <section>
+            <section className="resume-section">
               <h2 className="flex items-center gap-2 text-base font-black uppercase tracking-widest text-[#EC4899] mb-3">
                 <span className="inline-block w-6 h-0.5 bg-[#EC4899]" />Education
               </h2>
               <div className="space-y-3 ml-2">
                 {education.map((edu) => (
-                  <div key={edu.id} className="flex justify-between">
+                  <div key={edu.id} className="flex justify-between resume-entry">
                     <div>
                       <p className="font-bold text-[#111827]">{edu.degree}</p>
                       <p className="text-[#6B7280] text-xs">{edu.institution}{edu.location ? `, ${edu.location}` : ""}</p>
@@ -137,13 +132,13 @@ export default function CreativeTemplate({ data }: Props) {
 
           {/* Projects */}
           {sectionVisibility.projects && projects.length > 0 && (
-            <section>
+            <section className="resume-section">
               <h2 className="flex items-center gap-2 text-base font-black uppercase tracking-widest text-[#2563EB] mb-3">
                 <span className="inline-block w-6 h-0.5 bg-[#2563EB]" />Projects
               </h2>
               <div className="grid grid-cols-1 gap-2 ml-2">
                 {projects.map((proj) => (
-                  <div key={proj.id} className="p-3 bg-[#F9FAFB] rounded-md border border-[#E5E7EB]">
+                  <div key={proj.id} className="p-3 bg-[#F9FAFB] rounded-md border border-[#E5E7EB] resume-entry">
                     <div className="flex items-center gap-2">
                       <p className="font-bold text-[#111827]">{proj.title || "Project"}</p>
                       {proj.link && (
@@ -162,13 +157,13 @@ export default function CreativeTemplate({ data }: Props) {
 
           {/* Certifications */}
           {sectionVisibility.certifications && certifications.length > 0 && (
-            <section>
+            <section className="resume-section">
               <h2 className="flex items-center gap-2 text-base font-black uppercase tracking-widest text-[#6B7280] mb-3">
                 <span className="inline-block w-6 h-0.5 bg-[#6B7280]" />Certifications
               </h2>
               <div className="space-y-1 ml-2">
                 {certifications.map((cert) => (
-                  <div key={cert.id} className="flex justify-between">
+                  <div key={cert.id} className="flex justify-between resume-entry">
                     <span className="font-medium">{cert.name}{cert.issuer ? ` · ${cert.issuer}` : ""}</span>
                     <span className="text-[#9CA3AF] text-xs">{cert.date}</span>
                   </div>
@@ -179,7 +174,7 @@ export default function CreativeTemplate({ data }: Props) {
 
           {/* Hobbies */}
           {sectionVisibility.hobbies && hobbies.length > 0 && (
-            <section>
+            <section className="resume-section">
               <h2 className="flex items-center gap-2 text-base font-black uppercase tracking-widest text-[#6B7280] mb-2">
                 <span className="inline-block w-6 h-0.5 bg-[#6B7280]" />Interests
               </h2>
