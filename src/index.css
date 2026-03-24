@@ -139,9 +139,14 @@
   }
 }
 
-/* Print styles */
+/* ─── Print / PDF styles ─────────────────────────────────────────── */
 @media print {
-  /* 1. Global Reset for Print */
+  /* Page setup */
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
   html,
   body {
     margin: 0 !important;
@@ -149,72 +154,88 @@
     height: auto !important;
     overflow: visible !important;
     background: #fff !important;
-    /* Forces browsers to render colors/backgrounds (Tailwind fix) */
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
 
-  /* 2. Page Setup: Removes URL, Date, and Page Titles */
-  @page {
-    size: A4;
-    margin: 0; /* Removing margins kills browser headers/footers */
-  }
-
-  /* 3. The Main Container */
-  #resume-preview {
-    display: block !important;
-    width: 210mm !important; /* Strict A4 Width */
-    margin: 0 auto !important;
-    padding: 15mm !important; /* Internal padding mimics a paper margin */
-    box-shadow: none !important;
-    min-height: 0 !important;
-    position: relative !important;
-  }
-
-  /* 4. Solving the "Blank Page" Issue */
-  /* Remove trailing margins from the last element to prevent "overflow leakage" */
-  #resume-preview *:last-child {
-    margin-bottom: 0 !important;
-    padding-bottom: 0 !important;
-  }
-
-  #resume-preview .flex {
-    display: block !important;
-  }
-  /* 2. Remove the fixed width and padding that might cause clipping */
-  #resume-preview .w-\[160px\] {
-    width: 100% !important;
-    padding-bottom: 5px !important;
-  }
-
-  #resume-preview .flex-1 {
-    padding-left: 0 !important;
-    display: block !important;
-  }
-
-  /* 5. Solving the "Splitting/Cutting" Issue */
-  /* Apply this class to your logical sections (e.g., Experience blocks) */
-  .print-section {
-    display: block !important; /* Flex/Grid blocks the 'avoid' logic */
-    break-inside: avoid-page !important;
-    page-break-inside: avoid !important;
-    margin-bottom: 1rem !important;
-    float: none !important;
-    width: 100%;
-  }
-
-  /* 6. UI Cleanup */
-  /* Hide buttons, navbars, and sidebars in the PDF */
-  .no-print,
-  button,
-  nav,
-  footer.web-only {
+  /* Hide everything except the resume */
+  body > *:not(#print-root):not([id="root"]) {
     display: none !important;
   }
 
-  /* 7. Typography Optimization */
+  /* Hide all UI chrome */
+  header,
+  nav,
+  footer,
+  button,
+  .print\:hidden {
+    display: none !important;
+  }
+
+  /* Ensure page background is visible */
+  main {
+    display: block !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* The resume element itself */
+  #resume-preview {
+    position: static !important;
+    transform: none !important;
+    width: 210mm !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  /* ── Prevent content from splitting across pages ── */
+
+  /* Each resume section block stays together */
+  .resume-section {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Individual job/project/education entries */
+  .resume-entry {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Section headings should never be orphaned at bottom of a page */
+  h1, h2, h3, h4, h5, h6 {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  /* List items (bullet points) stay whole */
+  li {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Paragraphs don't split */
+  p {
+    orphans: 3;
+    widows: 3;
+  }
+
+  /* Preserve list bullets that Tailwind hides by default */
+  ul {
+    list-style-type: disc !important;
+    padding-left: 1.25rem !important;
+  }
+
+  ol {
+    list-style-type: decimal !important;
+    padding-left: 1.25rem !important;
+  }
+
+  /* Link colours */
   a {
     text-decoration: none !important;
-    color: black !important;
+    color: inherit !important;
   }
 }
